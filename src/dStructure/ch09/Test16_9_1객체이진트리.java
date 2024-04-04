@@ -422,17 +422,16 @@ class Tree4 {
 		TreeNode4 p = root, parent = null;
 		TreeNode4 newTree = new TreeNode4(obj);
 		
-		SimpleObject4 e = new SimpleObject4("999", null);
-		TreeNode4 end = new TreeNode4(e);
-		
 		boolean isLeftChild = true;
 
 		parent = findParent(newTree, c);
 		
-		if(parent == end)
-			return false;
 
 		if (parent != null) {
+			
+			if(parent.data.getNo() == "999")
+				return false;
+			
 			if (c.compare(obj, parent.data) < 0) {
 				p = parent.LeftChild;
 				isLeftChild = true;
@@ -507,28 +506,72 @@ class Tree4 {
 		return true;
 	}
 
-	boolean search(SimpleObject4 obj, Comparator<? super SimpleObject4> c) {
+	TreeNode4 search(SimpleObject4 obj, Comparator<? super SimpleObject4> c) {
 		// 주어진 객체 obj를 갖는 노드를 찾는 문제
 		TreeNode4 p = root;
 		
 		while(p != null) {
 			if(c.compare(obj, p.data) == 0)
-				return true;
+				return p;
 			
 			if(c.compare(obj, p.data) < 0)
 				p = p.LeftChild;
 			else
-				p = p.RightChild;			
+				p = p.RightChild;	
 		}
-		return false;
+		return null;
 	}
 
-	void levelOrder()
-	// root 부터 level별로 출력 : root는 level 1, level 2는 다음줄에 => 같은 level이면 같은 줄에 출력하게 한다
-	{
-		ObjectQueue4 q = new ObjectQueue4(20);
-		TreeNode4 CurrentNode = root;
+	int getLevel(SimpleObject4 obj, Comparator<? super SimpleObject4> c) {
+		// 주어진 객체 obj의 Level을 찾는 메서드, root로 부터 하위 단계로 이동할때마다 count + 1
+		TreeNode4 p = root;
+		int cnt = 1;
+		
+		while(p != null) {
+			if(c.compare(obj, p.data) == 0)
+				return cnt;
+			
+			if(c.compare(obj, p.data) < 0)
+				p = p.LeftChild;
+			else
+				p = p.RightChild;
+			cnt++;
+		}
+		return -1;
+	}
 
+	void levelOrder() {
+		// root 부터 level별로 출력 : root는 level 1, level 2는 다음줄에 => 같은 level이면 같은 줄에 출력하게 한다
+		ObjectQueue4 q = new ObjectQueue4(30);
+		TreeNode4 CurrentNode = root;
+		
+		int newLevel=1, oldLevel=1;				
+		
+		q.enque(CurrentNode);		
+		
+		System.out.print("Level " + newLevel + " === ");
+		while(!q.isEmpty()) {
+			
+			CurrentNode = q.deque();
+			newLevel = getLevel(CurrentNode.data, SimpleObject4.NO_ORDER);
+			
+			if(oldLevel == newLevel) {
+				System.out.print(CurrentNode.data + " ");		
+			} else {				
+				System.out.print("\nLevel " + newLevel + " === ");
+				System.out.print(CurrentNode.data + " ");		
+			}
+			
+			if(CurrentNode.LeftChild != null) {
+				q.enque(CurrentNode.LeftChild);
+			}
+			
+			if(CurrentNode.RightChild != null) {
+				q.enque(CurrentNode.RightChild);				
+			}
+			
+			oldLevel = newLevel;
+		}
 	}
 
 	void NonrecInorder()// void Tree::inorder(TreeNode4 *CurrentNode)와 비교
@@ -597,6 +640,7 @@ public class Test16_9_1객체이진트리 {
 	public static void main(String[] args) {
 		Scanner sc2 = new Scanner(System.in);
 		Tree4 t = new Tree4();
+		TreeNode4 getNode;
 		Menu menu; // 메뉴
 		String sno1, sname1;
 		SimpleObject4 so;
@@ -619,7 +663,8 @@ public class Test16_9_1객체이진트리 {
 						new SimpleObject4("96", "jj"), 
 						new SimpleObject4("93", "kk"),
 						new SimpleObject4("33", "ll"), 
-						new SimpleObject4("66", "mm"), };
+						new SimpleObject4("66", "mm"),
+						};
 				for (SimpleObject4 soz : sox) {
 					t.add(soz, SimpleObject4.NO_ORDER);
 					System.out.print(soz + " ");
@@ -631,8 +676,13 @@ public class Test16_9_1객체이진트리 {
 			case Delete: // 임의 정수 삭제
 				so = new SimpleObject4();
 				so.scanData("삭제", SimpleObject4.NO);
+				
+				getNode = t.search(so, SimpleObject4.NO_ORDER);				
+				if(getNode != null)
+					System.out.print(getNode.data);
+				else
+					System.out.print(so);
 
-				System.out.print("[" + so.getNo() + "]");
 				if (t.delete(so, SimpleObject4.NO_ORDER))
 					System.out.println(" -> 삭제");
 				else
@@ -645,11 +695,11 @@ public class Test16_9_1객체이진트리 {
 			case Search: // 노드 검색
 				so = new SimpleObject4();
 				so.scanData("검색", SimpleObject4.NO);
-				result = t.search(so, SimpleObject4.NO_ORDER);
-				if (!result)
-					System.out.println("검색 값 = " + so + "데이터가 없습니다.");
+				getNode = t.search(so, SimpleObject4.NO_ORDER);
+				if (getNode == null)
+					System.out.println("검색 값 = " + so + " 데이터가 없습니다.");
 				else
-					System.out.println("검색 값 = " + so + "데이터가 존재합니다.");
+					System.out.println("검색 값 = " + getNode.data + " 데이터가 존재합니다.");
 				break;
 
 			case InorderPrint: // 전체 노드를 키값의 오름차순으로 표시
@@ -662,6 +712,8 @@ public class Test16_9_1객체이진트리 {
 			case LevelorderPrint: // 전체 노드를 키값의 오름차순으로 표시
 				t.levelOrder();
 				System.out.println();
+				System.out.println("=".repeat(50));
+
 				// t.NonrecInorder();
 				break;
 			case StackInorderPrint: // 전체 노드를 키값의 오름차순으로 표시
