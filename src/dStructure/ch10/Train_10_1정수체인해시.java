@@ -192,7 +192,7 @@ public class Train_10_1정수체인해시 {
 				int[] input = new int[count];
 				for (int ix = 0; ix < count; ix++) {
 					double d = Math.random();
-					input[ix] = (int) (d * 20);
+					input[ix] = (int) (d * 50);
 					System.out.print(" " + input[ix]);
 				}
 				System.out.println();

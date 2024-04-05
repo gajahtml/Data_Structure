@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 import dStructure.ch09.ObjectStack4.EmptyGenericStackException;
 
-class SimpleObject4 {
+class SimpleObject5 {
 	static final int NO = 1; // 번호를 읽어 들일까요?
 	static final int NAME = 2; // 이름을 읽어 들일까요?
 
@@ -28,12 +28,12 @@ class SimpleObject4 {
 		return name;
 	}
 
-	public SimpleObject4() {
+	public SimpleObject5() {
 		no = null;
 		name = null;
 	}
 
-	public SimpleObject4(String no, String name) {
+	public SimpleObject5(String no, String name) {
 		this.no = no;
 		this.name = name;
 	}
@@ -54,21 +54,21 @@ class SimpleObject4 {
 	}
 
 	// --- 회원번호로 순서를 매기는 comparator ---//
-	public static final Comparator<SimpleObject4> NO_ORDER = new NoOrderComparator();
+	public static final Comparator<SimpleObject5> NO_ORDER = new NoOrderComparator();
 
-	private static class NoOrderComparator implements Comparator<SimpleObject4> {
+	private static class NoOrderComparator implements Comparator<SimpleObject5> {
 		@Override
-		public int compare(SimpleObject4 d1, SimpleObject4 d2) {
+		public int compare(SimpleObject5 d1, SimpleObject5 d2) {
 			return (d1.no.compareTo(d2.no) > 0) ? 1 : (d1.no.compareTo(d2.no) < 0) ? -1 : 0;
 		}
 	}
 
 	// --- 이름으로 순서를 매기는 comparator ---//
-	public static final Comparator<SimpleObject4> NAME_ORDER = new NameOrderComparator();
+	public static final Comparator<SimpleObject5> NAME_ORDER = new NameOrderComparator();
 
-	private static class NameOrderComparator implements Comparator<SimpleObject4> {
+	private static class NameOrderComparator implements Comparator<SimpleObject5> {
 		@Override
-		public int compare(SimpleObject4 d1, SimpleObject4 d2) {
+		public int compare(SimpleObject5 d1, SimpleObject5 d2) {
 			return d1.name.compareTo(d2.name);
 		}
 	}
@@ -293,14 +293,14 @@ class ObjectQueue4 {
 //정수를 저정하는 이진트리 만들기 실습
 class TreeNode4 {
 	TreeNode4 LeftChild;
-	SimpleObject4 data;
+	SimpleObject5 data;
 	TreeNode4 RightChild;
 
 	public TreeNode4() {
 		LeftChild = RightChild = null;
 	}
 
-	TreeNode4(SimpleObject4 so) {
+	TreeNode4(SimpleObject5 so) {
 		data = so;
 		LeftChild = RightChild = null;
 	}
@@ -323,10 +323,10 @@ class Tree4 {
 		return temp;
 	}
 
-	TreeNode4 findParent(TreeNode4 current, Comparator<? super SimpleObject4> c) {
+	TreeNode4 findParent(TreeNode4 current, Comparator<? super SimpleObject5> c) {
 		// 주어진 노드의 parent node를 찾는 알고리즘
 		TreeNode4 p = root, temp = null;
-		SimpleObject4 e = new SimpleObject4("999", null);
+		SimpleObject5 e = new SimpleObject5("999", null);
 		TreeNode4 end = new TreeNode4(e);
 
 		while (p != null) {
@@ -390,7 +390,7 @@ class Tree4 {
 		}
 	}
 
-	public void add(SimpleObject4 obj, Comparator<? super SimpleObject4> c) {
+	public void add(SimpleObject5 obj, Comparator<? super SimpleObject5> c) {
 		// inorder로 출력시에 정렬이 되도록 입력: binary search tree를 구현
 		// left subtree < x < right subtree
 		TreeNode4 p = root;
@@ -416,7 +416,7 @@ class Tree4 {
 			q.RightChild = newTree;
 	}
 
-	public boolean delete(SimpleObject4 obj, Comparator<? super SimpleObject4> c) {
+	public boolean delete(SimpleObject5 obj, Comparator<? super SimpleObject5> c) {
 		// 주어진 객체 obj를 포함한 노드를 찾아 삭제하는 알고리즘
 		// 난이도: 최상급 중에서 최상급
 		TreeNode4 p = root, parent = null;
@@ -506,7 +506,7 @@ class Tree4 {
 		return true;
 	}
 
-	TreeNode4 search(SimpleObject4 obj, Comparator<? super SimpleObject4> c) {
+	TreeNode4 search(SimpleObject5 obj, Comparator<? super SimpleObject5> c) {
 		// 주어진 객체 obj를 갖는 노드를 찾는 문제
 		TreeNode4 p = root;
 		
@@ -522,7 +522,7 @@ class Tree4 {
 		return null;
 	}
 
-	int getLevel(SimpleObject4 obj, Comparator<? super SimpleObject4> c) {
+	int getLevel(SimpleObject5 obj, Comparator<? super SimpleObject5> c) {
 		// 주어진 객체 obj의 Level을 찾는 메서드, root로 부터 하위 단계로 이동할때마다 count + 1
 		TreeNode4 p = root;
 		int cnt = 1;
@@ -553,7 +553,7 @@ class Tree4 {
 		while(!q.isEmpty()) {
 			
 			CurrentNode = q.deque();
-			newLevel = getLevel(CurrentNode.data, SimpleObject4.NO_ORDER);
+			newLevel = getLevel(CurrentNode.data, SimpleObject5.NO_ORDER);
 			
 			if(oldLevel == newLevel) {
 				System.out.print(CurrentNode.data + " ");		
@@ -643,30 +643,30 @@ public class Test16_9_1객체이진트리 {
 		TreeNode4 getNode;
 		Menu menu; // 메뉴
 		String sno1, sname1;
-		SimpleObject4 so;
+		SimpleObject5 so;
 		int count = 0;
 		int num;
 		boolean result;
 		do {
 			switch (menu = SelectMenu()) {
 			case Add: //
-				SimpleObject4[] sox = { 
-						new SimpleObject4("91", "aa"),
-						new SimpleObject4("95", "bb"),
-						new SimpleObject4("55", "cc"), 
-						new SimpleObject4("77", "dd"), 
-						new SimpleObject4("22", "ee"),
-						new SimpleObject4("98", "ff"), 
-						new SimpleObject4("44", "gg"), 
-						new SimpleObject4("11", "hh"),
-						new SimpleObject4("88", "ii"), 
-						new SimpleObject4("96", "jj"), 
-						new SimpleObject4("93", "kk"),
-						new SimpleObject4("33", "ll"), 
-						new SimpleObject4("66", "mm"),
+				SimpleObject5[] sox = { 
+						new SimpleObject5("91", "aa"),
+						new SimpleObject5("95", "bb"),
+						new SimpleObject5("55", "cc"), 
+						new SimpleObject5("77", "dd"), 
+						new SimpleObject5("22", "ee"),
+						new SimpleObject5("98", "ff"), 
+						new SimpleObject5("44", "gg"), 
+						new SimpleObject5("11", "hh"),
+						new SimpleObject5("88", "ii"), 
+						new SimpleObject5("96", "jj"), 
+						new SimpleObject5("93", "kk"),
+						new SimpleObject5("33", "ll"), 
+						new SimpleObject5("66", "mm"),
 						};
-				for (SimpleObject4 soz : sox) {
-					t.add(soz, SimpleObject4.NO_ORDER);
+				for (SimpleObject5 soz : sox) {
+					t.add(soz, SimpleObject5.NO_ORDER);
 					System.out.print(soz + " ");
 				}
 				System.out.println();
@@ -674,16 +674,16 @@ public class Test16_9_1객체이진트리 {
 				break;
 
 			case Delete: // 임의 정수 삭제
-				so = new SimpleObject4();
-				so.scanData("삭제", SimpleObject4.NO);
+				so = new SimpleObject5();
+				so.scanData("삭제", SimpleObject5.NO);
 				
-				getNode = t.search(so, SimpleObject4.NO_ORDER);				
+				getNode = t.search(so, SimpleObject5.NO_ORDER);				
 				if(getNode != null)
 					System.out.print(getNode.data);
 				else
 					System.out.print(so);
 
-				if (t.delete(so, SimpleObject4.NO_ORDER))
+				if (t.delete(so, SimpleObject5.NO_ORDER))
 					System.out.println(" -> 삭제");
 				else
 					System.out.println(" -> 데이터 없음");
@@ -693,9 +693,9 @@ public class Test16_9_1객체이진트리 {
 				break;
 
 			case Search: // 노드 검색
-				so = new SimpleObject4();
-				so.scanData("검색", SimpleObject4.NO);
-				getNode = t.search(so, SimpleObject4.NO_ORDER);
+				so = new SimpleObject5();
+				so.scanData("검색", SimpleObject5.NO);
+				getNode = t.search(so, SimpleObject5.NO_ORDER);
 				if (getNode == null)
 					System.out.println("검색 값 = " + so + " 데이터가 없습니다.");
 				else
